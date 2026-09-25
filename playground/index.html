@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Particle Playground</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0A0E14;--panel:#0F151D;--line:#212B36;--ink:#ECF1F6;--dim:#8FA0B2;--cyan:#4FD6E8;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;overflow:hidden}
+  canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
+  .bar{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;
+    background:rgba(15,21,29,.85);backdrop-filter:blur(8px);border:1px solid var(--line);padding:10px 12px;max-width:calc(100% - 24px)}
+  button{font:500 12px 'IBM Plex Mono',monospace;color:var(--dim);background:transparent;border:1px solid var(--line);padding:8px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:.2s}
+  button:hover{color:var(--ink);border-color:var(--cyan)}
+  button.on{color:var(--bg);background:var(--cyan);border-color:var(--cyan)}
+  .sep{width:1px;height:22px;background:var(--line)}
+  .sw{width:22px;height:22px;border-radius:50%;padding:0;border:2px solid transparent}
+  .sw.on{border-color:var(--ink);background-clip:padding-box}
+  .title{position:fixed;top:max(14px,env(safe-area-inset-top));left:16px;font:500 12px 'IBM Plex Mono',monospace;color:var(--dim);letter-spacing:.08em;pointer-events:none}
+  .title b{color:var(--cyan);font-weight:500}
+  a.back{position:fixed;top:max(14px,env(safe-area-inset-top));right:16px;font:500 12px 'IBM Plex Mono',monospace;color:var(--dim);text-decoration:none}
+  a.back:hover{color:var(--cyan)}
+  input[type=range]{accent-color:var(--cyan);width:90px}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="title">PARTICLE PLAYGROUND <b>//</b> <span id="count">0</span> NÓS</div>
+<a class="back" href="../index.html">← PORTFOLIO</a>
+<div class="bar">
+  <button data-mode="orbit" class="on">Órbita</button>
+  <button data-mode="swarm">Enxame</button>
+  <button data-mode="burst">Explosão</button>
+  <button data-mode="gravity">Gravidade</button>
+  <span class="sep"></span>
+  <button class="sw on" data-pal="0" style="background:#4FD6E8" aria-label="Ciano"></button>
+  <button class="sw" data-pal="1" style="background:#F0A860" aria-label="Âmbar"></button>
+  <button class="sw" data-pal="2" style="background:#B79CF0" aria-label="Violeta"></button>
+  <button class="sw" data-pal="3" style="background:linear-gradient(135deg,#4FD6E8,#F0A860,#B79CF0)" aria-label="Arco-íris"></button>
+  <span class="sep"></span>
+  <input type="range" id="amt" min="50" max="600" value="260" aria-label="Quantidade">
+  <button id="clear">Limpar</button>
+  <button id="save">PNG</button>
+</div>
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+let W,H,dpr;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#0A0E14';ctx.fillRect(0,0,W,H)}
+addEventListener('resize',resize);resize();
+
+const PALS=[[187],[32],[262],[187,32,262]];
+let mode='orbit',pal=0,parts=[],ptr={x:W/2,y:H/2,down:false,active:false};
+const rnd=(a,b)=>a+Math.random()*(b-a);
+function mk(x,y,vx=0,vy=0){
+  const p=PALS[pal];
+  return{x:x??rnd(0,W),y:y??rnd(0,H),vx,vy,h:p[Math.floor(Math.random()*p.length)],r:rnd(1,2.6),a:rnd(.4,1)};
+}
+function fill(n){while(parts.length<n)parts.push(mk())}
+function setCount(n){if(parts.length>n)parts.length=n;else fill(n)}
+fill(260);
+
+function move(e){const t=e.touches?e.touches[0]:e;ptr.x=t.clientX;ptr.y=t.clientY;ptr.active=true}
+cv.addEventListener('pointermove',move);
+cv.addEventListener('pointerdown',e=>{move(e);ptr.down=true;if(mode==='burst')boom(ptr.x,ptr.y)});
+addEventListener('pointerup',()=>ptr.down=false);
+cv.addEventListener('pointerleave',()=>{ptr.active=false;ptr.down=false});
+function boom(x,y){for(const p of parts){const dx=p.x-x,dy=p.y-y,d=Math.hypot(dx,dy)+1,f=Math.min(900/d,28);p.vx+=dx/d*f;p.vy+=dy/d*f}}
+
+function step(){
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='rgba(10,14,20,.16)';ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation='lighter';
+  const t=performance.now()/1000;
+  for(const p of parts){
+    const dx=ptr.x-p.x,dy=ptr.y-p.y,d=Math.hypot(dx,dy)+.01;
+    if(ptr.active||mode==='orbit'){
+      if(mode==='orbit'){const k=ptr.active?.0009:0;p.vx+=dx*k+(-dy/d)*.09*(ptr.active?1:0);p.vy+=dy*k+(dx/d)*.09*(ptr.active?1:0);p.vx*=.985;p.vy*=.985}
+      else if(mode==='swarm'){const k=ptr.active?.0014:0;p.vx+=dx*k+Math.sin(t*2+p.y*.01)*.05;p.vy+=dy*k+Math.cos(t*2+p.x*.01)*.05;p.vx*=.955;p.vy*=.955}
+      else if(mode==='burst'){p.vx*=.965;p.vy*=.965;if(ptr.active&&d<140){p.vx-=dx/d*.4;p.vy-=dy/d*.4}}
+      else if(mode==='gravity'){p.vy+=.12;if(ptr.active&&d<260){const f=(ptr.down?-1:1)*90/(d+30);p.vx+=dx/d*f*.5;p.vy+=dy/d*f*.5}p.vx*=.995}
+    }else{p.vx*=.97;p.vy*=.97}
+    p.x+=p.vx;p.y+=p.vy;
+    if(mode==='gravity'){if(p.y>H){p.y=H;p.vy*=-.7}if(p.x<0||p.x>W){p.vx*=-1;p.x=Math.max(0,Math.min(W,p.x))}}
+    else{if(p.x<0)p.x+=W;else if(p.x>W)p.x-=W;if(p.y<0)p.y+=H;else if(p.y>H)p.y-=H}
+    const sp=Math.min(Math.hypot(p.vx,p.vy)/8,1);
+    ctx.fillStyle=`hsla(${p.h},85%,${58+sp*20}%,${p.a})`;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r+sp*1.5,0,6.283);ctx.fill();
+  }
+  // constellation lines near pointer
+  if(ptr.active){
+    ctx.lineWidth=.6;
+    for(const p of parts){const d=Math.hypot(ptr.x-p.x,ptr.y-p.y);if(d<120){ctx.strokeStyle=`hsla(${p.h},85%,65%,${(1-d/120)*.5})`;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(ptr.x,ptr.y);ctx.stroke()}}
+  }
+  requestAnimationFrame(step);
+}
+step();
+
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
+  mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));
+  if(mode==='gravity')parts.forEach(p=>{p.vy=0});
+});
+document.querySelectorAll('[data-pal]').forEach(b=>b.onclick=()=>{
+  pal=+b.dataset.pal;document.querySelectorAll('[data-pal]').forEach(x=>x.classList.toggle('on',x===b));
+  const p=PALS[pal];parts.forEach(q=>q.h=p[Math.floor(Math.random()*p.length)]);
+});
+const amt=document.getElementById('amt'),cnt=document.getElementById('count');
+amt.oninput=()=>setCount(+amt.value);
+document.getElementById('clear').onclick=()=>{ctx.globalCompositeOperation='source-over';ctx.fillStyle='#0A0E14';ctx.fillRect(0,0,W,H)};
+document.getElementById('save').onclick=()=>{const a=document.createElement('a');a.download='particle-playground.png';a.href=cv.toDataURL('image/png');a.click()};
+setInterval(()=>cnt.textContent=parts.length,300);
+</script>
+</body>
+</html>
