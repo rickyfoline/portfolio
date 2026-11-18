@@ -275,6 +275,50 @@
   .footer-row a:hover{color:var(--cyan);}
   .footer-links{display:flex;gap:20px;flex-wrap:wrap;}
 
+
+  /* ---------- media (curadoria) ---------- */
+  .modal{max-width:880px;}
+  .modal-top video{width:100%;height:100%;object-fit:contain;background:#000;display:block;}
+  .vchips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;}
+  .vchip{font-family:'Geist Mono',monospace;font-size:12px;background:none;border:1px solid var(--line);color:var(--ink-dim);padding:0 12px;min-height:40px;cursor:pointer;}
+  .vchip[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);}
+  .play-badge{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:50%;background:rgba(10,14,20,.78);display:flex;align-items:center;justify-content:center;border:1px solid var(--line);}
+  .play-badge svg{width:14px;height:14px;fill:var(--ink);margin-left:2px;}
+  .about-photos{display:grid;grid-template-columns:1fr 1.5fr;gap:10px;margin:0 0 28px;}
+  .about-photo{margin:0;border:1px solid var(--line);}
+  .about-photo img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;}
+  .about-photo.sq img{aspect-ratio:1/1;}
+  /* ---------- topics (4 por linha, reprodução na página) ---------- */
+  .works-grid{display:flex;flex-direction:column;gap:64px;}
+  .topic-head{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;margin:0 0 18px;padding-top:18px;border-top:1px solid var(--line);}
+  .topic-title{font-size:22px;font-weight:700;letter-spacing:-.01em;margin:0;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .topic-cat{font-family:'Geist Mono',monospace;font-size:11.5px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+  .topic.c-film{--accent:var(--amber);} .topic.c-games{--accent:var(--cyan);}
+  .topic-sub{margin:0;color:var(--ink-dim);font-size:14.5px;line-height:1.55;max-width:56ch;}
+  .tiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+  @media(max-width:1000px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media(max-width:600px){.tiles{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -20px;padding:0 20px 6px;} .tile{flex:0 0 82%;scroll-snap-align:start;}}
+  .tile-media{aspect-ratio:16/9;background:#000;border:1px solid var(--line);position:relative;overflow:hidden;transition:border-color .2s;}
+  .tile:hover .tile-media{border-color:var(--accent);}
+  .tile-media img,.tile-media video{width:100%;height:100%;object-fit:cover;display:block;}
+  .tile-media video{object-fit:contain;}
+  .tile-play{all:unset;cursor:pointer;display:block;width:100%;height:100%;position:relative;}
+  .tile-play:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .tile-play img{transition:transform .5s var(--ease-out);}
+  .tile-play:hover img{transform:scale(1.04);}
+  .tile-play .play-badge{top:auto;right:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;}
+  .tile-t{margin:12px 0 2px;font-size:15.5px;font-weight:600;line-height:1.3;color:var(--ink);}
+  .tile-r{margin:0;font-size:13px;line-height:1.5;color:var(--ink-faint);}
+  .tile-r a{color:var(--ink-dim);text-decoration:underline;text-underline-offset:3px;}
+  /* hero reel */
+  .hero-grid.has-reel{grid-template-columns:.95fr 1.05fr;}
+  @media(max-width:900px){.hero-grid.has-reel{grid-template-columns:1fr;}}
+  .reel-frame{position:relative;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);background:#000;}
+  .reel-frame video{width:100%;height:100%;object-fit:cover;display:block;}
+  .reel-sound{position:absolute;left:14px;bottom:14px;z-index:2;display:inline-flex;align-items:center;gap:8px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.04em;color:var(--ink);background:rgba(10,14,20,.82);border:1px solid var(--line);padding:0 14px;min-height:40px;cursor:pointer;}
+  .reel-sound:hover{border-color:var(--ink);}
+  .reel-sound svg{width:12px;height:12px;fill:var(--ink);}
+
   /* ---------- modal ---------- */
   .modal-overlay{position:fixed;inset:0;background:rgba(6,9,13,.8);display:none;align-items:flex-start;justify-content:center;padding:60px 20px;overflow-y:auto;z-index:100;}
   .modal-overlay.open{display:flex;}
@@ -346,7 +390,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="grid-bg"></div>
-    <div class="wrap hero-grid">
+    <div class="wrap hero-grid has-reel">
       <div class="hero-copy">
         <div class="status-tag"><span class="status-dot"></span><span data-i18n="hero_status">A aceitar projetos · Portugal e remoto</span></div>
         <h1 class="hero-h">
@@ -359,15 +403,12 @@
           <a class="btn btn-ghost" href="#trabalhos" data-i18n="hero_cta2">Ver trabalhos</a>
         </div>
       </div>
-      <figure class="duo">
-        <div class="duo-frame" id="duoFrame" role="slider" tabindex="0" aria-label="Comparar vídeo e 3D em tempo real" data-i18n-aria="duo_aria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-          <img class="duo-b" src="assets/dna.jpg" alt="3D em tempo real: cavalo low-poly entre arcos de néon" data-i18n-alt="alt_rt" style="object-position:50% 40%">
-          <div class="duo-grid" aria-hidden="true"></div>
-          <div class="duo-a"><img src="assets/postprod.jpg" alt="Vídeo: imagem aérea de instalações agrícolas ao pôr do sol" data-i18n-alt="alt_av" style="object-position:58% 50%"></div>
-          <span class="duo-tag l mono" data-i18n="duo_l">VÍDEO</span><span class="duo-tag r mono" data-i18n="duo_r">TEMPO REAL</span>
-          <span class="duo-line" aria-hidden="true"><i><svg viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></i></span>
+      <figure class="duo reel-fig">
+        <div class="reel-frame">
+          <video id="heroReel" src="assets/media/reel-hero.mp4" poster="assets/media/reel-hero-poster.webp" autoplay muted loop playsinline preload="auto" aria-label="Reel de portfólio, sem som" data-i18n-aria="reel_aria"></video>
+          <button class="reel-sound" type="button" id="reelSound"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg><span data-i18n="reel_sound">Ver com som</span></button>
         </div>
-        <figcaption class="duo-caption" data-i18n="duo_cap">Arraste para comparar: filmagem real e render em tempo real</figcaption>
+        <figcaption class="duo-caption" data-i18n="reel_cap">Reel 2026 · vídeo, motion, cinema e 3D em tempo real</figcaption>
       </figure>
     </div>
   </section>
@@ -390,7 +431,7 @@
         <div class="sol-col rt reveal" style="--d:.08s">
           <h3 class="sol-title" data-i18n="rt_t">Experiências interativas e gamificadas</h3>
           <ul class="sol-list">
-            <li><span class="sol-name" data-i18n="rt1_n">Feiras e eventos</span><p class="sol-desc" data-i18n="rt1_d">Uma experiência jogável no stand que atrai visitantes e faz a marca ser lembrada.</p></li>
+            <!-- retirado por enquanto: <li><span class="sol-name" data-i18n="rt1_n">Feiras e eventos</span><p class="sol-desc" data-i18n="rt1_d">Uma experiência jogável no stand que atrai visitantes e faz a marca ser lembrada.</p></li> -->
             <li><span class="sol-name" data-i18n="rt2_n">Formação e onboarding</span><p class="sol-desc" data-i18n="rt2_d">Treino gamificado que as equipas querem terminar, com progresso visível.</p></li>
             <li><span class="sol-name" data-i18n="rt3_n">Turismo, museus e imobiliário</span><p class="sol-desc" data-i18n="rt3_d">Visitas e espaços em 3D em tempo real, para ecrã, instalação ou realidade virtual.</p></li>
             <li><span class="sol-name" data-i18n="rt4_n">Trailers e cinematics</span><p class="sol-desc" data-i18n="rt4_d">Vídeo com qualidade de cinema feito dentro do motor de jogo, para produtos e lançamentos.</p></li>
@@ -410,7 +451,7 @@
       <div class="works-head">
         <div>
           <h2 class="sec-h" data-i18n="work_h">Trabalho feito, em vídeo e em tempo real.</h2>
-          <p class="sec-sub" data-i18n="work_sub">Projetos para clientes e trabalho autoral, identificados como tal.</p>
+          <p class="sec-sub" data-i18n="work_sub">Organizado por tema. Carregue num vídeo para o ver aqui mesmo.</p>
         </div>
         <div class="filters" id="filters">
           <button class="filter-btn active" data-cat="all" data-i18n="f_all">Todos</button>
@@ -450,6 +491,10 @@
         </div>
       </div>
       <div>
+        <div class="about-photos">
+          <figure class="about-photo sq"><img src="assets/media/foto-retrato-pb.jpg" alt="Retrato de Ricky Foline" loading="lazy"></figure>
+          <figure class="about-photo"><img src="assets/media/foto-bastidores-camara.jpg" alt="Ricky Foline nos bastidores, com câmara ao ombro" loading="lazy"></figure>
+        </div>
         <p class="creds-title" data-i18n="cr_t">Formação</p>
         <ul class="creds">
           <li><span class="yr">2025</span><span class="t" data-i18n="cr1">Certificado Profissional em Game Design</span><span class="o">Epic Games · Coursera</span></li>
@@ -461,8 +506,7 @@
         <div class="tools">
           <span class="tool">Unreal Engine 5</span><span class="tool">Blender</span><span class="tool">MetaHuman</span><span class="tool">Substance 3D Painter</span><span class="tool">DaVinci Resolve</span><span class="tool">Premiere Pro</span><span class="tool">After Effects</span>
         </div>
-        <!-- PLACEHOLDER: substituir por logótipos de clientes ou um testemunho real -->
-        <div class="ph-block" data-i18n="ph_proof">[ Espaço reservado: logótipos de clientes ou testemunho ]</div>
+        <!-- retirado por enquanto: espaço para logótipos de clientes ou testemunho -->
       </div>
     </div>
   </section>
@@ -498,22 +542,8 @@
               <input type="text" id="f-name" autocomplete="name" placeholder="O seu nome" data-i18n-ph="ph_name" required>
             </div>
             <div class="field">
-              <label class="form-label" for="f-company" data-i18n="form_company">Empresa</label>
-              <input type="text" id="f-company" autocomplete="organization" placeholder="Nome da empresa" data-i18n-ph="ph_company">
-            </div>
-          </div>
-          <div class="field">
-            <label class="form-label" for="f-email" data-i18n="form_email">Email</label>
-            <input type="email" id="f-email" autocomplete="email" placeholder="nome@empresa.pt" data-i18n-ph="ph_email" required>
-          </div>
-          <div class="form-row">
-            <div class="field">
-              <label class="form-label" for="f-type" data-i18n="form_type">Tipo de projeto</label>
-              <select id="f-type"></select>
-            </div>
-            <div class="field">
-              <label class="form-label" for="f-date"><span data-i18n="form_date">Data ou prazo</span> <em data-i18n="optional">(opcional)</em></label>
-              <input type="text" id="f-date" placeholder="ex.: feira em março" data-i18n-ph="ph_date">
+              <label class="form-label" for="f-email" data-i18n="form_email">Email</label>
+              <input type="email" id="f-email" autocomplete="email" placeholder="nome@empresa.pt" data-i18n-ph="ph_email" required>
             </div>
           </div>
           <div class="field">
@@ -534,7 +564,6 @@
       <span class="footer-links">
         <a href="mailto:info@rickyfoline.pt">info@rickyfoline.pt</a>
         <a href="https://www.artstation.com/rickyfoline" target="_blank" rel="noopener">ArtStation</a>
-        <a href="playground/index.html">Lab</a>
       </span>
     </div>
   </footer>
@@ -550,122 +579,169 @@ const EMAIL = 'info@rickyfoline.pt';
 const IMG = { dna:"assets/dna.jpg", ue5:"assets/ue5.jpg", kinetic:"assets/kinetic.jpg", narrative:"assets/narrative.jpg", postprod:"assets/postprod.jpg", trailer:"assets/trailer.jpg" };
 
 /* kind: client | personal | mixed. Placeholders (ph:true) are slots for the B2B cases still to come. */
-const WORKS = [
-  {
-    cat:"film", kind:"client", img:IMG.postprod,
-    title_pt:"Vídeo institucional e imagem aérea", title_en:"Institutional video & aerial footage",
-    desc_pt:"Filmagem com drone, edição e cor para comunicação institucional, do ficheiro RAW à entrega final.",
-    desc_en:"Drone footage, editing and colour for corporate communication, from RAW files to final delivery.",
-    role_pt:"Realização, imagem, edição e cor · [cliente a confirmar]", role_en:"Direction, camera, edit and colour · [client to confirm]",
-    bullets_pt:["Fluxo completo do RAW à entrega: corte, correção de cor e exportação para cada canal.","Imagem aérea para mostrar a escala das instalações e do território.","Ritmo e cor afinados ao longo de dezenas de produções comerciais."],
-    bullets_en:["Full RAW-to-delivery workflow: edit, colour grade and export for every channel.","Aerial footage that shows the scale of the site and the land around it.","Pacing and colour refined across dozens of commercial productions."],
-    tools:["DaVinci Resolve","Premiere Pro","After Effects"], link:null
-  },
-  {
-    cat:"games", kind:"client", img:IMG.trailer,
-    title_pt:"Trailers e cinematics em Unreal Engine", title_en:"Trailers & cinematics in Unreal Engine",
-    desc_pt:"Trailers de lançamento feitos dentro do motor de jogo: planificação, câmara, luz e montagem, com prazos curtos.",
-    desc_en:"Launch trailers made inside the game engine: shot list, camera, lighting and edit, on short deadlines.",
-    role_pt:"Trailers para estúdios independentes · 2024 – 2025", role_en:"Trailers for independent studios · 2024 – 2025",
-    bullets_pt:["Trailer completo, da lista de planos à montagem, entregue a tempo para o lançamento do cliente.","Criatura e esqueleto modelados e com rig à medida, usados diretamente nas cenas.","Avaliação de 5 estrelas em todos os projetos de trailer, por comunicação, rapidez e abertura ao feedback."],
-    bullets_en:["A complete trailer, from shot list to edit, delivered in time for the client's launch.","A custom creature and skeleton, modelled and rigged, used directly in the footage.","Rated 5 stars on every trailer project for communication, speed and openness to feedback."],
-    tools:["Unreal Engine 5","Sequencer","DaVinci Resolve"],
-    link:{pt:"Ver no YouTube", en:"Watch on YouTube", url:"https://www.youtube.com/watch?v=SFgS6Kbua2o"}
-  },
-  {
-    cat:"games", kind:"client", img:IMG.dna,
-    title_pt:"Ambientes 3D para um jogo de corrida", title_en:"3D environments for a racing game",
-    desc_pt:"Mais de 20 assets e 5 pistas para a DNA Racing, pensados para a composição e para correr em tempo real.",
-    desc_en:"20+ assets and 5 tracks for DNA Racing, built for composition and real-time performance.",
-    role_pt:"Ambientes 3D e game design · DNA Racing, 2024", role_en:"3D environments and game design · DNA Racing, 2024",
-    bullets_pt:["Mais de 20 assets prontos para jogo: ambientes, veículos e elementos de interface.","5 ambientes de pista desenhados para a experiência do jogador.","Fluxo PBR completo: modelação, UV, retopologia, baking e otimização."],
-    bullets_en:["20+ game-ready assets: environments, vehicles and UI elements.","5 track environments designed around the player's experience.","Full PBR workflow: modelling, UVs, retopology, baking and optimisation."],
-    tools:["Unreal Engine 5","Blender","Substance 3D Painter"],
-    link:{pt:"Ver no ArtStation", en:"View on ArtStation", url:"https://www.artstation.com/rickyfoline"}
-  },
-  {
-    cat:"games", kind:"mixed", img:IMG.ue5,
-    title_pt:"Protótipos jogáveis e MetaHuman", title_en:"Playable prototypes & MetaHuman",
-    desc_pt:"Seis protótipos jogáveis em UE5 e um sistema de fatos espaciais MetaHuman para um cliente na Austrália.",
-    desc_en:"Six playable UE5 prototypes and a MetaHuman spacesuit wardrobe for a client in Australia.",
-    role_pt:"Prototipagem autoral e trabalho para cliente · 2024 – 2025", role_en:"Personal prototyping and client work · 2024 – 2025",
-    bullets_pt:["Seis protótipos jogáveis (ação, stealth e narrativa), do conceito à build funcional.","Level design, Blueprint e interface: a base para experiências gamificadas à medida.","Sistema de guarda-roupa MetaHuman feito à medida para um cliente australiano."],
-    bullets_en:["Six playable prototypes (action, stealth and narrative), from concept to working build.","Level design, Blueprint and UI: the groundwork for custom gamified experiences.","A custom MetaHuman wardrobe system for an Australian client."],
-    tools:["Unreal Engine 5","Blueprint","MetaHuman"], link:null
-  },
-  {
-    cat:"film", kind:"personal", img:IMG.narrative,
-    title_pt:"Curtas-metragens: realização e fotografia", title_en:"Short films: directing & cinematography",
-    desc_pt:"Argumento, realização, imagem e montagem. A curta Intenso venceu Melhor Argumento no Festival de Vitória.",
-    desc_en:"Writing, directing, camera and edit. The short Intenso won Best Screenplay at the Vitória Film Festival.",
-    role_pt:"Cinema autoral · desde 2015", role_en:"Personal film work · since 2015",
-    bullets_pt:["Escrevi, realizei e produzi curtas como Intenso, Sonhos Invisíveis e Os Fortunatos.","Intenso: Melhor Argumento no 16º Festival de Cinema de Vitória.","Câmaras ARRI e fluxos RAW em rodagem."],
-    bullets_en:["Wrote, directed and produced shorts including Intenso, Sonhos Invisíveis and Os Fortunatos.","Intenso: Best Screenplay at the 16th Vitória Film Festival.","ARRI cameras and RAW workflows on set."],
-    tools:["ARRI","DaVinci Resolve","Premiere Pro"], link:null
-  },
-  {
-    cat:"games", kind:"personal", img:IMG.kinetic,
-    title_pt:"Motion design em tempo real", title_en:"Real-time motion design",
-    desc_pt:"Estudos de movimento e renders em tempo real, entre o motor de jogo e o motion design.",
-    desc_en:"Motion studies and real-time renders, between the game engine and motion design.",
-    role_pt:"Estudos autorais · 2023 – 2025", role_en:"Personal studies · 2023 – 2025",
-    bullets_pt:["Movimento procedural e coreografia de objetos em renders em tempo real.","Laboratório de luz, timing e composição para peças de marca e eventos."],
-    bullets_en:["Procedural motion and object choreography as real-time renders.","A lab for light, timing and composition used in brand and event pieces."],
-    tools:["Blender","Unreal Engine 5","After Effects"], link:null
-  },
-  /* PLACEHOLDERS: substituir por casos B2B reais quando o portfólio estiver no Drive */
-  { ph:true, cat:"film", title_pt:"Campanha publicitária", title_en:"Advertising campaign", desc_pt:"Espaço reservado para um caso de campanha: objetivo, o que foi feito e resultado.", desc_en:"Reserved for a campaign case: goal, what was made and the result." },
-  { ph:true, cat:"games", title_pt:"Experiência interativa para evento", title_en:"Interactive experience for an event", desc_pt:"Espaço reservado para o primeiro caso gamificado para empresa.", desc_en:"Reserved for the first gamified business case." }
+const M = "assets/media/";
+const V = (s, pt, en) => ({ src: M + s + ".mp4", poster: M + s + "-poster.webp", label_pt: pt, label_en: en || pt });
+const P = s => M + s + "-poster.webp";
+
+/* Reel aberto pelo botão do topo */
+const REEL = {
+  cat:"film", kind:"mixed", img:P("reel-portfolio"), videos:[V("reel-portfolio","Reel","Reel")],
+  title_pt:"Reel de portfólio", title_en:"Portfolio reel",
+  role_pt:"Vídeo, motion, VFX e 3D em tempo real", role_en:"Video, motion, VFX and real-time 3D",
+  bullets_pt:["Dois minutos com o melhor do trabalho em vídeo, motion design, videoclipe, cinema e animação 3D."],
+  bullets_en:["Two minutes of the best work in video, motion design, music video, film and 3D animation."],
+  tools:["DaVinci Resolve","After Effects","Unreal Engine 5","Blender"], link:null
+};
+
+/* Trabalhos por tema: cada linha tem até 4 peças, reproduzidas na própria página. */
+const TOPICS = [
+  { id:"institucional", cat:"film",
+    title_pt:"Institucional e Storytelling", title_en:"Corporate and storytelling",
+    sub_pt:"Campanhas internas, produção de vídeos.",
+    sub_en:"Internal campaigns, video production.",
+    items:[
+      { v:"santa-lucia-piratas", t_pt:"Farmácias Santa Lúcia", t_en:"Santa Lúcia pharmacies", r_pt:"Campanha interna “Em Busca do Tesouro” · Edição e finalização", r_en:"“Treasure Hunt” internal campaign · Editing and finishing" },
+      { v:"tlantic-farmacia-silveira", t_pt:"Tlantic", t_en:"Tlantic", r_pt:"Testemunho de cliente · Edição e finalização", r_en:"Customer testimonial · Editing and finishing" },
+      { v:"train-effective-treino-futebol", t_pt:"Train Effective · treino", t_en:"Train Effective · training", r_pt:"Sessão de treino com grafismo animado · Edição e motion", r_en:"Training session with animated graphics · Editing and motion" },
+      { v:"train-effective-prevencao-lesoes", t_pt:"Train Effective · prevenção de lesões", t_en:"Train Effective · injury prevention", r_pt:"Vídeo formativo · Edição e motion", r_en:"Training video · Editing and motion" }
+    ]},
+  { id:"agro", cat:"film",
+    title_pt:"Agro e indústria", title_en:"Agriculture and industry",
+    sub_pt:"Operações de grande escala, com as equipas que as fazem.",
+    sub_en:"Large-scale operations, with the teams who run them.",
+    items:[
+      { v:"olam-agricola", t_pt:"Olam · institucional", t_en:"Olam · corporate film", r_pt:"Operação agrícola · Captação e edição", r_en:"Farming operation · Filming and editing" },
+      { v:"olam-video-5", t_pt:"Olam · a fazenda e as pessoas", t_en:"Olam · the farm and its people", r_pt:"Testemunhos e imagem aérea · Captação e edição", r_en:"Testimonials and aerial footage · Filming and editing" },
+      { v:"olam-04", t_pt:"Olam · da colheita à exportação", t_en:"Olam · from harvest to export", r_pt:"Cadeia de produção · Captação e edição", r_en:"Supply chain · Filming and editing" },
+      { v:"benetech-institucional", t_pt:"Benetech", t_en:"Benetech", r_pt:"Institucional industrial · Edição e finalização", r_en:"Industrial corporate film · Editing and finishing" }
+    ]},
+  { id:"vinhos", cat:"film",
+    title_pt:"Quintas e vinhos", title_en:"Wine estates",
+    sub_pt:"Filmes de marca, fichas técnicas em vídeo e imagem aérea da vinha.",
+    sub_en:"Brand films, video wine sheets and aerial footage of the vineyards.",
+    items:[
+      { v:"quinta-alta-institucional", t_pt:"Quinta Alta", t_en:"Quinta Alta", r_pt:"Filme institucional · Edição e finalização", r_en:"Brand film · Editing and finishing" },
+      { v:"quinta-alta-zuccaro", t_pt:"Quinta Alta · Zuccaro", t_en:"Quinta Alta · Zuccaro", r_pt:"Ficha técnica animada · Edição e motion", r_en:"Animated wine sheet · Editing and motion" },
+      { v:"quinta-casal-branco", t_pt:"Quinta do Casal Branco", t_en:"Quinta do Casal Branco", r_pt:"Filme de marca · Edição e finalização", r_en:"Brand film · Editing and finishing" },
+      { v:"vindima-peva-2026", t_pt:"Vindima em Peva, Guarda", t_en:"Harvest in Peva, Guarda", r_pt:"Autoral, 2026 · Realização, imagem, drone e cor", r_en:"Personal, 2026 · Direction, camera, drone and colour" }
+    ]},
+  { id:"publicidade", cat:"film",
+    title_pt:"Publicidade e motion para TV", title_en:"Advertising and TV motion graphics",
+    sub_pt:"Spots de 30 segundos para televisão e redes, com motion graphics para retalho.",
+    sub_en:"30-second spots for TV and social media, with motion graphics for retail.",
+    items:[
+      { v:"saboratta-publicidade", t_pt:"Saboratta", t_en:"Saboratta", r_pt:"Anúncio de 30 s · Edição e finalização", r_en:"30 s commercial · Editing and finishing" },
+      { v:"varejo-tai-motors", t_pt:"Tai Motors · Hyundai", t_en:"Tai Motors · Hyundai", r_pt:"Spot de TV · Motion graphics", r_en:"TV spot · Motion graphics" },
+      { v:"varejo-sempretem", t_pt:"Sempretem", t_en:"Sempretem", r_pt:"Campanha de retalho para TV · Motion graphics", r_en:"Retail TV campaign · Motion graphics" },
+      { v:"colodetti-transforma", t_pt:"Colodetti Transforma", t_en:"Colodetti Transforma", r_pt:"Série de marca, episódio 6 · Edição", r_en:"Branded series, episode 6 · Editing" }
+    ]},
+  { id:"eventos", cat:"film",
+    title_pt:"Eventos e música", title_en:"Events and music",
+    sub_pt:"Aftermovies, imagem aérea e videoclipes, com montagem ao ritmo da música.",
+    sub_en:"Aftermovies, aerial footage and music videos, cut to the music.",
+    items:[
+      { v:"guriri-sensation", t_pt:"Guriri Sensation", t_en:"Guriri Sensation", r_pt:"Aftermovie de festival · Edição", r_en:"Festival aftermovie · Editing" },
+      { v:"videoclipe-eniefe-vibe", t_pt:"Eniefe · VIBE", t_en:"Eniefe · VIBE", r_pt:"Videoclipe oficial", r_en:"Official music video" },
+      { v:"videoclipe-numar-100-por-hora", t_pt:"Numar Fantecele · 100 por Hora", t_en:"Numar Fantecele · 100 por Hora", r_pt:"Videoclipe oficial", r_en:"Official music video" },
+      { v:"smash-bros-major-evento", t_pt:"Major League", t_en:"Major League", r_pt:"Torneio de e-sports · Captação e edição", r_en:"E-sports tournament · Filming and editing" }
+    ]},
+  { id:"cinema", cat:"film",
+    title_pt:"Cinema", title_en:"Film",
+    sub_pt:"Ficção escrita, realizada e montada por mim, da curta-metragem à longa.",
+    sub_en:"Fiction I wrote, directed and edited, from short films to a feature.",
+    items:[
+      { v:"nugationem", t_pt:"Nugationem", t_en:"Nugationem", r_pt:"Curta de suspense · Argumento, realização e finalização", r_en:"Thriller short · Writing, directing and finishing" },
+      { v:"sonhos-invisiveis", t_pt:"Sonhos Invisíveis", t_en:"Sonhos Invisíveis", r_pt:"Longa-metragem · Argumento, realização e montagem", r_en:"Feature film · Writing, directing and editing" },
+      { v:"curta-pb", t_pt:"Cinzas", t_en:"Cinzas", r_pt:"Curta a preto e branco · Academia Internacional de Cinema", r_en:"Black-and-white short · Academia Internacional de Cinema" },
+      { v:"curta-hotel-bastidores", t_pt:"Senhor Alfredo", t_en:"Senhor Alfredo", r_pt:"Curta de ficção · Argumento, realização e montagem", r_en:"Short fiction film · Writing, directing and editing" }
+    ]},
+  { id:"interativo", cat:"games",
+    title_pt:"Jogos e experiências interativas", title_en:"Games and interactive experiences",
+    sub_pt:"Protótipos jogáveis e experiências em Unreal Engine, formação e espaços.",
+    sub_en:"Playable prototypes and Unreal Engine experiences, training and venues.",
+    items:[
+      { v:"tour-interativo-casa", t_pt:"Visita interativa a uma casa", t_en:"Interactive house tour", r_pt:"Unreal Engine 5 · Interação e ambiente", r_en:"Unreal Engine 5 · Interaction and environment" },
+      { v:"prototipo-jogo-deserto", t_pt:"Protótipo de ação no deserto", t_en:"Desert action prototype", r_pt:"Jogo para cliente · Game design e Blueprint", r_en:"Client game · Game design and Blueprint" },
+      { v:"smash-a-pumpkin", t_pt:"Smash a Pumpkin", t_en:"Smash a Pumpkin", r_pt:"Jogo de evento · Game design e Blueprint", r_en:"Event game · Game design and Blueprint" },
+      { v:"metahuman-guarda-roupa", t_pt:"Guarda-roupa MetaHuman", t_en:"MetaHuman wardrobe", r_pt:"Cliente na Austrália · Sistema de fatos espaciais", r_en:"Client in Australia · Spacesuit wardrobe system" }
+    ]},
+  { id:"cinematicas", cat:"games",
+    title_pt:"Trailers e cinemáticas em tempo real", title_en:"Real-time trailers and cinematics",
+    sub_pt:"Trailers de jogo e cenas em Unreal Engine, com câmara, luz e montagem de cinema.",
+    sub_en:"Game trailers and Unreal Engine scenes, with film-style camera, light and editing.",
+    items:[
+      { v:"biscudo-trailer", t_pt:"Biscudo", t_en:"Biscudo", r_pt:"Trailer de jogo", r_en:"Game trailer", link:{pt:"Ver no YouTube", en:"Watch on YouTube", url:"https://www.youtube.com/watch?v=SFgS6Kbua2o"} },
+      { v:"trailer-selva", t_pt:"Trailer de jogo", t_en:"Game trailer", r_pt:"Unreal Engine 5", r_en:"Unreal Engine 5" },
+      { v:"lootseekers-cutscene", t_pt:"Lootseekers", t_en:"Lootseekers", r_pt:"Cinemática · Projeto para cliente, não lançado", r_en:"Cinematic · Client project, unreleased" },
+      { v:"oceano-unreal", t_pt:"Oceano e falésias", t_en:"Ocean and cliffs", r_pt:"Estudo autoral · Luz, água e câmara", r_en:"Personal study · Light, water and camera" }
+    ]},
+  { id:"arte3d", cat:"games",
+    title_pt:"Arte e ambientes 3D", title_en:"3D art and environments",
+    sub_pt:"Ambientes, personagens e cenas prontos para jogo, do modelo à imagem final.",
+    sub_en:"Game-ready environments, characters and scenes, from model to final image.",
+    items:[
+      { img:"assets/dna.jpg", t_pt:"DNA Racing", t_en:"DNA Racing", r_pt:"Mais de 20 assets e 5 pistas · Cliente", r_en:"20+ assets and 5 tracks · Client", link:{pt:"ArtStation", en:"ArtStation", url:"https://www.artstation.com/rickyfoline"} },
+      { img:"assets/media/cidade-medieval.webp", t_pt:"Lootseekers · cidade medieval", t_en:"Lootseekers · medieval town", r_pt:"Ambiente low-poly · Cliente", r_en:"Low-poly environment · Client" },
+      { img:"assets/media/icarus-canyon.webp", t_pt:"Icarus Fall · desfiladeiro", t_en:"Icarus Fall · canyon", r_pt:"Ambiente realista em Unreal Engine", r_en:"Realistic Unreal Engine environment" },
+      { img:"assets/media/corredor-neon.webp", t_pt:"Corredor sci-fi", t_en:"Sci-fi corridor", r_pt:"Ambiente de jogo · luz e atmosfera", r_en:"Game environment · light and atmosphere" }
+    ]}
 ];
 
-const KIND = { pt:{client:"Cliente", personal:"Autoral", mixed:"Cliente + autoral"}, en:{client:"Client", personal:"Personal", mixed:"Client + personal"} };
 const CAT = { pt:{film:"Audiovisual", games:"Interativo & 3D"}, en:{film:"Audiovisual", games:"Interactive & 3D"} };
+const KIND = { pt:{client:"Cliente", personal:"Autoral", mixed:"Cliente + autoral"}, en:{client:"Client", personal:"Personal", mixed:"Client + personal"} };
 
 let currentLang = 'pt';
 const T = (w, f) => w[f + '_' + currentLang] || w[f + '_pt'];
 const grid = document.getElementById('worksGrid');
 let revealObserver = null;
 let currentFilter = 'all';
+const PLAY_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>';
+
+function stopOthers(except){
+  document.querySelectorAll('.tile video').forEach(v => { if(v !== except) v.pause(); });
+}
+function playTile(btn){
+  const slug = btn.dataset.v;
+  const media = btn.parentElement;
+  const vid = document.createElement('video');
+  vid.src = M + slug + '.mp4'; vid.poster = M + slug + '-poster.webp';
+  vid.controls = true; vid.playsInline = true; vid.preload = 'auto';
+  vid.addEventListener('play', () => stopOthers(vid));
+  media.replaceChild(vid, btn);
+  stopOthers(vid);
+  vid.play().catch(() => {});
+}
 
 function render(animate){
   grid.innerHTML = '';
-  WORKS.filter(w => currentFilter === 'all' || w.cat === currentFilter).forEach((w, i) => {
-    const card = document.createElement(w.ph ? 'div' : 'article');
-    card.className = 'card c-' + w.cat + (w.ph ? ' ph' : '') + (animate ? ' reveal' : '');
-    if(animate) card.style.setProperty('--d', (i % 2) * 0.08 + 's');
-    const catClass = 'cat-' + w.cat;
-    if(w.ph){
-      card.innerHTML = `
-        <div class="card-top"><span class="ph-mark">${currentLang === 'pt' ? 'Novo caso em breve' : 'New case soon'}</span></div>
-        <div class="card-body">
-          <div class="tags"><span class="tag ${catClass}">${CAT[currentLang][w.cat]}</span></div>
-          <h3 class="card-title">${T(w,'title')}</h3>
-          <p class="card-desc">${T(w,'desc')}</p>
-        </div>`;
-    } else {
-      card.innerHTML = `
-        <div class="card-top">
-          <div class="thumb"><img src="${w.img}" alt="" loading="lazy" decoding="async"></div>
-          <div class="tags"><span class="tag ${catClass}">${CAT[currentLang][w.cat]}</span><span class="tag kind">${KIND[currentLang][w.kind]}</span></div>
-        </div>
-        <div class="card-body">
-          <h3 class="card-title">${T(w,'title')}</h3>
-          <p class="card-desc">${T(w,'desc')}</p>
-          <span class="card-more">${currentLang === 'pt' ? 'Ver detalhes' : 'See details'} <svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-        </div>`;
-      card.tabIndex = 0; card.setAttribute('role','button'); card.setAttribute('aria-haspopup','dialog'); card.setAttribute('aria-label', T(w,'title'));
-      card.addEventListener('click', () => openModal(w, card));
-      card.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openModal(w, card); } });
-    }
-    grid.appendChild(card);
-    if(animate && revealObserver) revealObserver.observe(card);
+  const pt = currentLang === 'pt';
+  TOPICS.filter(t => currentFilter === 'all' || t.cat === currentFilter).forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'topic c-' + t.cat + (animate ? ' reveal' : '');
+    row.innerHTML = `
+      <div class="topic-head">
+        <h3 class="topic-title"><span class="topic-cat">${CAT[currentLang][t.cat]}</span>${T(t,'title')}</h3>
+        <p class="topic-sub">${T(t,'sub')}</p>
+      </div>
+      <ul class="tiles">${t.items.map(it => `
+        <li class="tile">
+          <div class="tile-media">${it.v
+            ? `<button class="tile-play" type="button" data-v="${it.v}" aria-label="${(pt ? 'Reproduzir: ' : 'Play: ') + T(it,'t')}"><img src="${M + it.v}-poster.webp" alt="" loading="lazy" decoding="async"><span class="play-badge">${PLAY_SVG}</span></button>`
+            : `<img src="${it.img}" alt="${T(it,'t')}" loading="lazy" decoding="async">`}</div>
+          <p class="tile-t">${T(it,'t')}</p>
+          <p class="tile-r">${T(it,'r')}${it.link ? ` · <a href="${it.link.url}" target="_blank" rel="noopener">${it.link[currentLang]}</a>` : ''}</p>
+        </li>`).join('')}
+      </ul>`;
+    row.querySelectorAll('.tile-play').forEach(b => b.addEventListener('click', () => playTile(b)));
+    grid.appendChild(row);
+    if(animate && revealObserver) revealObserver.observe(row);
   });
 }
 
 document.getElementById('filters').addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn'); if(!btn) return;
   document.querySelectorAll('.filter-btn').forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', b === btn); });
-  currentFilter = btn.dataset.cat;
+  currentFilter = btn.dataset.cat; stopOthers(null);
   grid.style.opacity = '0';
   setTimeout(() => { render(false); grid.style.opacity = '1'; }, 160);
 });
@@ -680,11 +756,12 @@ function openModal(w, trigger){
   const pt = currentLang === 'pt';
   modalContent.innerHTML = `
     <button class="modal-close" id="modalClose" aria-label="${pt ? 'Fechar' : 'Close'}"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
-    <div class="modal-top"><img src="${w.img}" alt=""></div>
+    <div class="modal-top">${w.videos ? `<video id="modalVideo" controls playsinline preload="metadata" poster="${w.videos[0].poster}" src="${w.videos[0].src}"></video>` : `<img src="${w.img}" alt="">`}</div>
     <div class="modal-body">
       <div class="modal-cat" style="color:${accent}">${CAT[currentLang][w.cat]} · ${KIND[currentLang][w.kind]}</div>
       <h3 class="modal-title" id="modalTitle">${T(w,'title')}</h3>
       <p class="modal-role">${T(w,'role')}</p>
+      ${w.videos && w.videos.length > 1 ? `<div class="vchips">${w.videos.map((v,i) => `<button class="vchip" type="button" data-i="${i}" aria-pressed="${i===0}">${v['label_'+currentLang] || v.label_pt}</button>`).join('')}</div>` : ''}
       <ul>${T(w,'bullets').map(b => `<li>${b}</li>`).join('')}</ul>
       <div class="modal-tools">${w.tools.map(t => `<span class="tool">${t}</span>`).join('')}</div>
       <div class="modal-actions">
@@ -698,11 +775,17 @@ function openModal(w, trigger){
   overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
   document.getElementById('modalClose').addEventListener('click', closeModal);
+  modalContent.querySelectorAll('.vchip').forEach(btn => btn.addEventListener('click', () => {
+    const v = w.videos[+btn.dataset.i], el = document.getElementById('modalVideo');
+    el.poster = v.poster; el.src = v.src; el.play().catch(()=>{});
+    modalContent.querySelectorAll('.vchip').forEach(b => b.setAttribute('aria-pressed', b === btn));
+  }));
   document.getElementById('modalCta').addEventListener('click', () => { prefillType(w.cat === 'film' ? 'campaign' : 'event'); closeModal(false); });
   document.getElementById('modalClose').focus();
 }
 function closeModal(restore = true){
   if(!overlay.classList.contains('open')) return;
+  const mv = document.getElementById('modalVideo'); if(mv) mv.pause();
   overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true');
   document.body.style.overflow = '';
   if(restore && lastFocus && lastFocus.focus) lastFocus.focus();
@@ -716,6 +799,9 @@ document.addEventListener('keydown', e => {
   if(e.shiftKey && document.activeElement === a){ z.focus(); e.preventDefault(); }
   else if(!e.shiftKey && document.activeElement === z){ a.focus(); e.preventDefault(); }
 });
+
+document.getElementById('reelSound').addEventListener('click', e => { document.getElementById('heroReel').pause(); openModal(REEL, e.currentTarget); });
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ const hr = document.getElementById('heroReel'); hr.removeAttribute('autoplay'); hr.pause(); }
 
 /* ---------- mobile nav ---------- */
 const burger = document.getElementById('burgerBtn');
@@ -743,11 +829,12 @@ const TYPES = {
 };
 const typeSel = document.getElementById('f-type');
 function fillTypes(){
+  if(!typeSel) return;
   const keep = typeSel.value;
   typeSel.innerHTML = TYPES[currentLang].map(([v,l]) => `<option value="${v}">${l}</option>`).join('');
   if(keep) typeSel.value = keep;
 }
-function prefillType(v){ typeSel.value = v; }
+function prefillType(v){ if(typeSel) typeSel.value = v; }
 document.querySelectorAll('[data-prefill]').forEach(a => a.addEventListener('click', () => prefillType(a.dataset.prefill)));
 
 const form = document.getElementById('contactForm');
@@ -762,11 +849,8 @@ form.addEventListener('submit', e => {
     bad.focus(); return;
   }
   const v = id => document.getElementById(id).value.trim();
-  const typeLabel = typeSel.options[typeSel.selectedIndex].text;
-  const subject = `${typeLabel}${v('f-company') ? ' · ' + v('f-company') : ''}`;
-  const lines = [v('f-message'), '', `${I18N[currentLang].form_type}: ${typeLabel}`];
-  if(v('f-date')) lines.push(`${I18N[currentLang].form_date}: ${v('f-date')}`);
-  lines.push('', `${v('f-name')}${v('f-company') ? ', ' + v('f-company') : ''} (${v('f-email')})`);
+  const subject = `${currentLang === 'pt' ? 'Pedido de proposta' : 'Project enquiry'} · ${v('f-name')}`;
+  const lines = [v('f-message'), '', `${v('f-name')} (${v('f-email')})`];
   s.innerHTML = `${I18N[currentLang].form_status} <button type="button" class="status-copy" id="statusCopy">${I18N[currentLang].form_copy}</button>`;
   document.getElementById('statusCopy').addEventListener('click', async ev => {
     try{ await navigator.clipboard.writeText(EMAIL); ev.target.textContent = I18N[currentLang].form_copied; }catch(_){}
@@ -811,8 +895,8 @@ const I18N = {
     hero_status:"A aceitar projetos · Portugal e remoto",
     hero_h1:"Vídeo e experiências interativas para empresas", hero_h2:"// do briefing ao resultado",
     hero_sub:"Sou o <strong>Ricky Foline</strong>. Produzo vídeo institucional e de campanha, e crio experiências gamificadas em Unreal Engine para eventos, formação e espaços. Uma só pessoa responsável, do primeiro briefing até depois da entrega.",
-    hero_cta1:"Falar sobre um projeto", hero_cta2:"Ver trabalhos",
-    duo_l:"VÍDEO", duo_r:"TEMPO REAL", duo_cap:"Arraste para comparar: filmagem real e render em tempo real", duo_aria:"Comparar vídeo e 3D em tempo real",
+    hero_cta1:"Falar sobre um projeto", hero_cta2:"Ver trabalhos", hero_cta3:"Ver reel (2 min)",
+    reel_sound:"Ver com som", reel_cap:"Reel 2026 · vídeo, motion, cinema e 3D em tempo real", reel_aria:"Reel de portfólio, sem som",
     alt_rt:"3D em tempo real: cavalo low-poly entre arcos de néon", alt_av:"Vídeo: imagem aérea de instalações agrícolas ao pôr do sol",
     sol_h:"Duas frentes, um só responsável.", sol_sub:"Escolha o formato pelo objetivo. Eu trato do resto: ideia, guião, produção, tecnologia e entrega.",
     av_k:"Audiovisual", av_t:"Produção de vídeo",
@@ -825,7 +909,7 @@ const I18N = {
     rt3_n:"Turismo, museus e imobiliário", rt3_d:"Visitas e espaços em 3D em tempo real, para ecrã, instalação ou realidade virtual.",
     rt4_n:"Trailers e cinematics", rt4_d:"Vídeo com qualidade de cinema feito dentro do motor de jogo, para produtos e lançamentos.",
     ag_p:"<strong>Agências:</strong> produzo como parte da vossa equipa, com a vossa marca e dentro do vosso prazo.", ag_cta:"Falar sobre parceria",
-    work_h:"Trabalho feito, em vídeo e em tempo real.", work_sub:"Projetos para clientes e trabalho autoral, identificados como tal.",
+    work_h:"Trabalho feito, em vídeo e em tempo real.", work_sub:"Organizado por tema. Carregue num vídeo para o ver aqui mesmo.",
     f_all:"Todos", f_film:"Audiovisual", f_games:"Interativo &amp; 3D",
     pr_h:"Acompanho o projeto até ao resultado.", pr_sub:"Fala sempre comigo, do primeiro contacto à entrega. Sem intermediários e sem passar o projeto de mão em mão.",
     s1_t:"Diagnóstico", s1_d:"Uma conversa para perceber o objetivo, o público e onde a peça vai ser usada.",
@@ -854,8 +938,8 @@ const I18N = {
     hero_status:"Taking on projects · Portugal and remote",
     hero_h1:"Video and interactive experiences for businesses", hero_h2:"// from brief to result",
     hero_sub:"I'm <strong>Ricky Foline</strong>. I produce institutional and campaign video, and build gamified experiences in Unreal Engine for events, training and venues. One accountable person, from the first brief to after delivery.",
-    hero_cta1:"Discuss a project", hero_cta2:"See the work",
-    duo_l:"VIDEO", duo_r:"REAL-TIME", duo_cap:"Drag to compare: real footage and real-time render", duo_aria:"Compare video and real-time 3D",
+    hero_cta1:"Discuss a project", hero_cta2:"See the work", hero_cta3:"Watch the reel (2 min)",
+    reel_sound:"Watch with sound", reel_cap:"2026 reel · video, motion, film and real-time 3D", reel_aria:"Portfolio reel, muted",
     alt_rt:"Real-time 3D: a low-poly horse inside neon arcs", alt_av:"Video: aerial shot of farm facilities at sunset",
     sol_h:"Two disciplines, one accountable person.", sol_sub:"Pick the format by the goal. I handle the rest: concept, script, production, technology and delivery.",
     av_k:"Audiovisual", av_t:"Video production",
@@ -868,7 +952,7 @@ const I18N = {
     rt3_n:"Tourism, museums and real estate", rt3_d:"Real-time 3D tours and spaces, for screens, installations or virtual reality.",
     rt4_n:"Trailers and cinematics", rt4_d:"Film-quality video made inside the game engine, for products and launches.",
     ag_p:"<strong>Agencies:</strong> I produce as part of your team, under your brand and on your deadline.", ag_cta:"Discuss a partnership",
-    work_h:"Work delivered, on camera and in real time.", work_sub:"Client projects and personal work, labelled as such.",
+    work_h:"Work delivered, on camera and in real time.", work_sub:"Grouped by theme. Press any video to watch it right here.",
     f_all:"All", f_film:"Audiovisual", f_games:"Interactive &amp; 3D",
     pr_h:"I stay with the project until the result.", pr_sub:"You talk to me from the first call to delivery. No middlemen, no hand-offs.",
     s1_t:"Discovery", s1_d:"A conversation to understand the goal, the audience and where the piece will be used.",
